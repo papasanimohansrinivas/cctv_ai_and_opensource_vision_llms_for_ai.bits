@@ -1,0 +1,16 @@
+[Unit]
+Description=consumer_inference
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+Restart=always
+WorkingDirectory=/root/backup_cloud_gpu_2_sep_21_2022
+ExecStart=/root/anaconda3/envs/fire_alert/bin/python x3d_large_consumer.py 45.77.156.45 10.1.96.3 10.1.96.3 0.60 cctv@ai#SOFTWARE007
+#StandardOutput=append:/var/log/sixteen_cams.log
+#StandardError=append:/var/log/consumer_inference_errors.log
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
