@@ -1,0 +1,17 @@
+[Unit]
+Description=Cloud-Init TTY4 Log Reader
+After=getty@tty4.service
+
+[Service]
+Type=simple
+Environment=LESSSECURE=1
+ExecStart=/usr/bin/less /var/log/cloud-init.log
+Restart=always
+StandardInput=tty
+StandardOutput=tty
+TTYPath=/dev/tty4
+TTYReset=yes
+TTYVHangup=yes
+
+[Install]
+WantedBy=multi-user.target

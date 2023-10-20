@@ -1,0 +1,16 @@
+[Unit]
+Description=dlstreamer_xeon_e2286g_ubuntu_20
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Restart=always
+WorkingDirectory=/root
+#ExecStartPre=/bin/bash -c  'source   /root/.bashrc'
+ExecStart=/bin/bash execute.sh
+#StandardOutput=append:/var/log/sixteen_cams.log
+StandardError=append:/var/log/sixteen_cams_errors.log    
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

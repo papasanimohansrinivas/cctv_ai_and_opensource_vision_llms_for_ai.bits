@@ -1,0 +1,14 @@
+[Unit]
+Description=dlstreamer_xeon_e2286g_ubuntu_20
+After=network.target
+Before=xeon_e2286g_ubuntu_20_vaapi.service 
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=/bin/bash -c 'source /opt/intel/dlstreamer/setupvars.sh' 
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
