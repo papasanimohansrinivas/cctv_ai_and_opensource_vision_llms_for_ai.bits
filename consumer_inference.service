@@ -1,0 +1,16 @@
+[Unit]
+Description=consumer_inference
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+Restart=always
+WorkingDirectory=/root
+ExecStart=/root/anaconda3/envs/fire_detection_a100/bin/python x3d_large_consumer.py
+#StandardOutput=append:/var/log/sixteen_cams.log
+StandardError=append:/var/log/consumer_inference_errors.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

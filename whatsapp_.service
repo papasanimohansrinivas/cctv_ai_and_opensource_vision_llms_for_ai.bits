@@ -1,0 +1,12 @@
+[Unit]
+Description=whatsapp_video_link
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=/root/anaconda3/envs/fire_detection_a100/bin/python whatsapp_server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
