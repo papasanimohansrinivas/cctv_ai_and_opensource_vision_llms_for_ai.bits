@@ -1,0 +1,9 @@
+[Unit]
+Description=client_1_49_206_199_97_25008_dvr_connection.service
+
+[Service]
+WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+ExecStart=/usr/bin/python3 dvr_to_cloud_ipv6_3.py client_1_49_206_199_97_25008_dvr_connection.ini
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=dlstreamer_xeon_e2286g_ubuntu_20
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Restart=always
+WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+ExecStart=/bin/bash execute_5.sh
+#StandardOutput=append:/var/log/sixteen_cams.log
+StandardError=append:/var/log/sixteen_cams_errors.log    
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=dlstreamer_xeon_e2286g_ubuntu_20
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+Restart=always
+WorkingDirectory=/root
+ExecStart=/bin/bash /root/execute_2.sh
+#StandardOutput=append:/var/log/five_cams.log
+StandardError=append:/var/log/five_cams_errors.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

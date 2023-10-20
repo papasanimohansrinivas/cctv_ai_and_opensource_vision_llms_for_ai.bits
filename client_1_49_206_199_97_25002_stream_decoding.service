@@ -1,0 +1,15 @@
+[Unit]
+Description=client_1_49_206_199_97_25002_stream_decoding.service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Restart=always
+WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+ExecStart=/bin/bash client_1_49_206_199_97_25002_stream_decoding.sh
+StandardError=append:/var/log/client_1_49_206_199_97_25002_stream_decoding.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

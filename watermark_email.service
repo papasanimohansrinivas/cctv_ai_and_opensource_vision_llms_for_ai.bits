@@ -1,0 +1,16 @@
+[Unit]
+Description=watermark_email
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+Restart=always
+WorkingDirectory=/root
+ExecStart=/bin/bash -c '/usr/bin/python3 watermark_email.py'
+#StandardOutput=append:/var/log/sixteen_cams.log
+StandardError=append:/var/log/watermark_eamil_errors.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

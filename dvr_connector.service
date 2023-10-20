@@ -1,0 +1,11 @@
+[Unit]
+Description=dvr_connector
+
+[Service]
+WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+ExecStart=/usr/bin/python3 dvr_to_cloud_ipv6_2.py 
+RuntimeMaxSec=360s
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

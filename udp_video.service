@@ -1,0 +1,17 @@
+[Unit]
+Description=watermark_email
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+KillSignal=SIGINT
+User=root
+Restart=always
+WorkingDirectory=/root
+ExecStart=/bin/bash -c 'python3 read_udp_traffic_gstreamer.py'
+#StandardOutput=append:/var/log/sixteen_cams.log
+StandardError=append:/var/log/udp_video_errors.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=client_1_49_206_199_97_25008_fluentbit.service
+Requires=network.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+ExecStart=/opt/fluent-bit/bin/fluent-bit -c client_1_49_206_199_97_25008_fluentbit.conf
+
+[Install]
+WantedBy=multi-user.target

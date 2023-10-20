@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+ <!-- <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}"> -->
+</head>
+<body>
+<h2>CCTV_AI_PIPELINE_MANAGEMENT_PORTAL</h2>
+<p align="left"><a href=/add_new_static_ip_with_port ><button class=grey style="height:50px;width:375px">ADD_NEW_dvr_static_ip_WITH_PORT_PIPELINE</button></a></p>
+
+<form action="/add_new_static_ip_with_port" method="POST">
+            <label for="username">Admin_Username:</label><br>
+        <br>
+            <input type="text" id="username" name="username"><br>
+        <br>
+            <label for="pwd">Admin_Password:</label><br>
+        <br>
+            <input type="password" id="pwd" name="pwd">
+            <br>
+        <br>
+            <br>
+        <br>
+            <label for="client_name">client_name:</label>
+            <input type="client_name" id="client_name" name="client_name">
+            <br>
+        <br>
+            <label for="dvr_static_ip">dvr_static_ip:</label>
+            <input type="dvr_static_ip" id="dvr_static_ip" name="dvr_static_ip">
+            <br>
+        <br>
+            <label for="dvr_port">dvr_port:</label>
+            <input type="dvr_port" id="dvr_port" name="dvr_port">
+            <br>
+        <br>
+            <label for="dvr_connection_protocol">dvr_connection_protocol:</label>
+            <input type="dvr_connection_protocol" id="dvr_connection_protocol" name="dvr_connection_protocol">
+            <br>
+        <br>
+            <label for="dvr_user_name">dvr_user_name:</label>
+            <input type="dvr_user_name" id="dvr_user_name" name="dvr_user_name">
+            <br>
+        <br>
+            <label for="dvr_password">dvr_password:</label>
+            <input type="dvr_password" id="dvr_password" name="dvr_password">
+            <br>
+        <br>
+        
+        <table id="tbl">
+            <tr>
+                <th>subscribed_usecases</th>
+                <th>image_width_per_usecase</th>
+                <th>image_height_per_usecase</th>
+                <th>frame_aggregration_per_usecase</th>
+                <th>cam_number_list</th>
+                <th>cam_description_list</th>
+                <th>cams_with_call_service_per_usecase</th>
+                <th>cams_with_whatsapp_service_per_usecase</th>
+                <th>subscribed_phone_numbers_for_call</th>
+                <th>subscribed_phone_numbers_for_whatsapp</th>
+            </tr>
+           <tr>
+              <td><input type="text" name="subscribed_usecases" /></td>
+              <td><input type="text" name="image_width_per_usecase" /></td> 
+              <td><input type="text" name="image_height_per_usecase" /></td>
+              <td><input type="text" name="frame_aggregration_per_usecase" /></td>
+              <td><input type="text" name="cam_number_list" /></td>
+              <td><input type="text" name="cam_description_list" /></td>
+              <td><input type="text" name="cams_with_call_service_per_usecase" /></td>
+              <td><input type="text" name="cams_with_whatsapp_service_per_usecase" /></td>
+              <td><input type="text" name="subscribed_phone_numbers_for_call" /></td>
+              <td><input type="text" name="subscribed_phone_numbers_for_whatsapp" /></td>
+              
+              <td><input type="button" value="Delete Row" onclick="SomeDeleteRowFunction(this)"/></td>
+              
+            </tr>
+        </table>
+        <input type="button"  value="Add another line" onclick="addField('tbl');" />
+        <input type="submit" value="Submit">
+        </form>
+        <h1>{{ template_var1 | upper  }}</h1>
+</body>
+<script>
+    function addField( table ){
+
+var tableRef = document.getElementById(table);
+var newRow   = tableRef.insertRow(-1);
+
+var newCell  = newRow.insertCell(0);
+var newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "subscribed_usecases");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(1);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "image_width_per_usecase");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(2);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "image_height_per_usecase");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+
+newCell = newRow.insertCell(3);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "frame_aggregration_per_usecase");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(4);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "cam_number_list");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(5);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "cam_description_list");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(6);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "cams_with_call_service_per_usecase");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(7);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "cams_with_whatsapp_service_per_usecase");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(8);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "subscribed_phone_numbers_for_call");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(9);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("name", "subscribed_phone_numbers_for_whatsapp");
+newElem.setAttribute("type", "text");
+newCell.appendChild(newElem);
+
+newCell = newRow.insertCell(10);
+newElem = document.createElement( 'input' );
+newElem.setAttribute("type", "button");
+newElem.setAttribute("value", "Delete Row");
+newElem.setAttribute("onclick", 'SomeDeleteRowFunction(this)')
+newCell.appendChild(newElem);
+}
+
+
+window.SomeDeleteRowFunction = function SomeDeleteRowFunction(o) {
+   var p=o.parentNode.parentNode;
+   p.parentNode.removeChild(p);
+}
+</script>
+</html>
