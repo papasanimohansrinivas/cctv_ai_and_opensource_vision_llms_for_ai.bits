@@ -1,3 +1,6 @@
 [submodule "AutoGPTQ"]
 	path = AutoGPTQ
 	url = https://github.com/PanQiWei/AutoGPTQ.git
+[submodule "qwen-vl"]
+	path = qwen-vl
+	url = https://huggingface.co/spaces/artificialguybr/qwen-vl
