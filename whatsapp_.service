@@ -1,0 +1,12 @@
+[Unit]
+Description=whatsapp_video_link
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/backup_cloud_gpu_2_sep_21_2022
+ExecStart=/root/anaconda3/envs/fire_alert/bin/python whatsapp_server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

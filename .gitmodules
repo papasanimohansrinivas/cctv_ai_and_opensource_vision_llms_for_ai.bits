@@ -1,0 +1,3 @@
+[submodule "AutoGPTQ"]
+	path = AutoGPTQ
+	url = https://github.com/PanQiWei/AutoGPTQ.git
