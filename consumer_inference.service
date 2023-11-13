@@ -1,0 +1,16 @@
+[Unit]
+Description=consumer_inference
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+#Restart=always
+WorkingDirectory=/root/cctv_ai_and_opensource_vision_llms_for_ai.bits
+ExecStart=/root/anaconda3/envs/demo_qwen_vl_int4/bin/python qwen_vl_inference.py 10.8.96.4 
+#StandardOutput=append:/var/log/sixteen_cams.log
+#StandardError=append:/var/log/consumer_inference_errors.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
