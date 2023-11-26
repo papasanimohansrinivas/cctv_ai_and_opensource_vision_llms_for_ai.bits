@@ -1,0 +1,45 @@
+,cam_no,cam_time,class,explanation
+0,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049891,first stage inference,There is no existence of burning fires in the image.
+1,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_4,1700049891,first stage inference,There is no existence of burning fires in the image.
+2,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_12,1700049891,first stage inference,There is no existence of burning fires in the image.
+3,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_11,1700049891,first stage inference,There is no existence of burning fires in the image.
+4,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_16,1700049891,first stage inference,There is no existence of burning fires in the image.
+5,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_7,1700049901,first stage inference,There is no existence of burning fires in the image.
+6,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_2,1700049901,first stage inference,There is no existence of burning fires in the image.
+7,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_1,1700049901,first stage inference,There is no existence of burning fires in the image.
+8,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_6,1700049901,first stage inference,There is no existence of burning fires in the image.
+9,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_4,1700049901,first stage inference,There is no existence of burning fires in the image.
+10,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_15,1700049901,first stage inference,"<ref> all the burning fires</ref><box>(253,20),(627,993)</box>"
+11,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_15,1700049901,second stage inference,"no, it is not fire."
+12,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049901,first stage inference,There is no existence of burning fires in the image.
+13,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_12,1700049901,first stage inference,There is no existence of burning fires in the image.
+14,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_11,1700049901,first stage inference,There is no existence of burning fires in the image.
+15,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_16,1700049901,first stage inference,There is no existence of burning fires in the image.
+16,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_7,1700049911,first stage inference,There is no existence of burning fires in the image.
+17,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_6,1700049911,first stage inference,There is no existence of burning fires in the image.
+18,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_2,1700049911,first stage inference,There is no existence of burning fires in the image.
+19,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_1,1700049911,first stage inference,There is no existence of burning fires in the image.
+20,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_15,1700049911,first stage inference,There is no existence of burning fires in the image.
+21,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_12,1700049911,first stage inference,"There is no existence of burning fires in the image, only a room with a TV and a couch."
+22,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_4,1700049911,first stage inference,There is no existence of burning fires in the image information.
+23,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049911,first stage inference,"<ref> burning fires</ref><box>(119,399),(217,527)</box>"
+24,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049911,second stage inference,a red computer monitor
+25,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_11,1700049911,first stage inference,There is no existence of burning fires in the image.
+26,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_16,1700049911,first stage inference,There is no existence of burning fires in the image.
+27,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_7,1700049921,first stage inference,There is no existence of burning fires in the image.
+28,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_2,1700049921,first stage inference,There is no existence of burning fires in the image information.
+29,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_6,1700049921,first stage inference,There is no existence of burning fires in the image.
+30,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_1,1700049921,first stage inference,There is no existence of any burning fires in the image.
+31,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_15,1700049921,first stage inference,There is no existence of burning fires in the image.
+32,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_12,1700049921,first stage inference,There is no existence of any burning fires in the image.
+33,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_4,1700049921,first stage inference,There is no existence of burning fires in the image.
+34,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049921,first stage inference,"<ref> burning fires</ref><box>(683,77),(774,269)</box>"
+35,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_8,1700049921,second stage inference,the door is open
+36,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_11,1700049921,first stage inference,There is no existence of burning fires in the image.
+37,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_16,1700049921,first stage inference,There is no existence of burning fires in the image.
+38,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_7,1700049931,first stage inference,There is no existence of burning fires in the image information.
+39,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_6,1700049931,first stage inference,There is no existence of burning fires in the image.
+40,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_2,1700049931,first stage inference,There is no existence of burning fires in the image.
+41,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_1,1700049931,first stage inference,There is no existence of burning fires in the image.
+42,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_12,1700049931,first stage inference,There is no existence of burning fires in the image.
+43,client_1_2401_4900_5072_7257_2_1_d38b_9a44_5540_cam_4,1700049931,first stage inference,There is no existence of burning fires in the image.

@@ -56,7 +56,7 @@ torch.manual_seed(1234)
 # model_dir = snapshot_download(model_id, revision=revision)
 # print(model_dir)
 # Note: The default behavior now has injection attack prevention off.
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen-VL-Chat-Int4", trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained("mohan007/Qwen-VL-Chat-Int4", trust_remote_code=True)
 # if not hasattr(tokenizer, 'model_dir'):
 #     tokenizer.model_dir = model_dir
 # use bf16
@@ -71,11 +71,11 @@ tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen-VL-Chat-Int4", trust_remote
 # use cpu only
 # model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen-VL-Chat", device_map="cpu", trust_remote_code=True).eval()
 # use cuda device
-model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen-VL-Chat-Int4",device_map="cuda", trust_remote_code=True,low_cpu_mem_usage=True).eval()
+model = AutoModelForCausalLM.from_pretrained("mohan007/Qwen-VL-Chat-Int4",device_map="cuda", trust_remote_code=True,low_cpu_mem_usage=True).eval()
 
 # model = model.to_bettertransformer()
 # Specify hyperparameters for generation
-model.generation_config = GenerationConfig.from_pretrained("Qwen/Qwen-VL-Chat-Int4", trust_remote_code=True)
+model.generation_config = GenerationConfig.from_pretrained("mohan007/Qwen-VL-Chat-Int4", trust_remote_code=True)
 # print(model.generation_config)
 # 1st dialogue turn
 load_b = time.time()
@@ -336,14 +336,19 @@ while (True):
                     pass
                 else:
                     # 2nd dialogue turn
+                    if cam_no.endswith("cam_1") or cam_no.endswith("cam_8") or cam_no.endswith("cam_15") or cam_no.endswith("cam_6") or cam_no.endswith("cam_7"):
+                        subject_of_query = "describe in detail ?"
+                    else:
+                        subject_of_query = "is it fire ?"
                     query = tokenizer.from_list_format([
                     {'image': '/root/cctv_ai_and_opensource_vision_llms_for_ai.bits/inputs/{}.png'.format(current_name)}, 
-                        {'text': 'is it  a   fire ? <box>{}</box>'.format(boxes[0])},
+                        {'text': '{} <box>{}</box>'.format(subject_of_query,boxes[0])},
+                        #  {'text': 'describe  in detail is it fire ? <box>{}</box>'.format(boxes[0])},
                     ])
                     # query = "<ref>what it is <box>{}</box></ref><img>/root/cctv_ai_and_opensource_vision_llms_for_ai.bits/inputs/{}.png'</img>".format(boxes[0],current_name)
                     response2, history = model.chat(tokenizer, query, history=None)
                     response2 = response2.lower()
-                    print(response2,current_name,"second turn <<<<<<<<<<<<<<<<<,--------------------")
+                    print(response2,current_name,'{} <box>{}</box>'.format(subject_of_query,boxes[0]),"second turn <<<<<<<<<<<<<<<<<,--------------------")
                     
                     analysis_array.append([cam_no,cam_time,"second stage inference",response2])
                     # # <ref>击掌</ref><box>(536,509),(588,602)</box>
@@ -358,7 +363,8 @@ while (True):
                     # (("no" in response2 ) and ("it" in response2) and ("is" in response2)) or \ 
                     #  (("no" in response2 ) and ("is" in response2)) or \
                     #  (("no" in response2 ) and ("it" in response2)) #### somewhat questionable
-                    statement = ("ceiling" in response2 ) or \
+                    statement = "firecracker" not in response2 and \
+                    (("ceiling" in response2 ) or \
                     (("no" in response2) and  ("fire" in response2)) or \
                      (("truck" in  response2) and ("fire" in response2)) or \
                      ("truck" in  response2) or ("toy" in response2)  or  \
@@ -388,15 +394,32 @@ while (True):
                      ("date" in response2) or \
                      (("date" in response2) and ("time" in response2)) or \
                      (("object" in response2) and ("red" in response2)) or \
-                     (("wall" in response2) and ("green" in response2)) ### pretty inaccurate
+                     (("wall" in response2) and ("green" in response2)) or \
+                     (("blue" in response2) and ("cooler" in response2)) or \
+                     (("blue" in response2) and ("bag" in response2)) or  \
+                     (("kid" in response2) and ("play" in response2)) or \
+                     (("bottle" in response2) and ("fire" not in response2)) or \
+                     (("bottle" in response2) and ("fire" not in response2)) or \
+                     (("sign" in response2) and ("wall"  in response2) and ("fire" not in response2)) or \
+                     (("slide" in response2) and ("fire" not in response2)) or \
+                     (("window" in response2) and ("fire" not in response2)) or \
+                     (("door" in response2) and ("fire" not in response2)) or \
+                     (("sink" in response2) and ("fire" not in response2))  or \
+                     (("printer" in response2) and ("fire" not in response2)) or \
+                     (("bike" in response2) and ("fire" not in response2))
+                     ) 
 
 
 
 
-                    if statement:
-                        pass
-                    else:
-                    # elif ("light" in response2) and ("ceiling" not in response2) or (("no" not in response2) and ("fire" in response2) or ("yes" in response2.lower() and ("fire" in response.lower()))):
+                    # if statement:
+                        # pass
+                    # else:
+
+                    if (("light" in response2) and ("shining" in response2)) or \
+                       (("no" not in response2) and ("fire" in response2)) or \
+                       (("yes" in response2.lower()) and ("fire" in response2.lower())):
+                        # (("extinguisher" not in response2.lower()) and ("fire" in response2.lower())  ):
                         # cv2.imwrite("./multimodal_llm_pilot_test_outputs/"+"{}_{}_{}_fire_pred.png".format(current_name,cam_no,str(cam_time)),input_numpy)
 
 
@@ -414,14 +437,6 @@ while (True):
                         print(" cam no current :- ","{}".format(str(cam_no))," <-----condsider")
                         output_dict = dict_[cam_no]
                         if output_dict["to_trigger"]==1 and output_dict["is_alarm_triggered"]==0:
-                            # pass
-    #                           temp_thread = Thread(target = alert_mechanism,args=(cam_no,"{}_{}_fire_pred.mp4".format(cam_no,str(cam_time)),))
-    #                           temp_thread.start()
-                            
-                            # payload = {'server_public_ip_address':server_public_ip_address,
-                            # "mp4_payload":"{}_{}_fire_pred.mp4".format(cam_no,str(cam_time)),
-                            # "cam_no":cam_no
-                            # }
                             payload = {'server_public_ip_address':server_public_ip_address,
                                         "media_payload":"http://{}:5000/fire/{}_{}_{}_fire_pred.png".format(server_public_ip_address,current_name,cam_no,str(cam_time)),
                                         "cam_no":cam_no,
