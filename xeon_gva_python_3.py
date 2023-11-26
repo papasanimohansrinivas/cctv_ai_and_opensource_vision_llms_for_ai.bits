@@ -35,11 +35,14 @@ class custom_accumulator():
             # print(self.temp_dict["cam_no"],self.temp_dict["accumulate_frames_no"],self.temp_dict["rabbit_mq_name"])
             self.temp_dict["accumulate_frames_no"]=int(self.temp_dict['accumulate_frames_no'])
             self.routing_key = self.temp_dict['rabbitmq_queue_name']
-            print(self.temp_dict)
+            print(self.temp_dict,"mohan")
         except Exception as ec :
-            print(ec)
-        credentials = pika.PlainCredentials('guest', 'guest')
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost',credentials=credentials,client_properties={"connection_name":self.temp_dict["cam_no"]}))
+            print(ec.__str__(),"what the fuck error")
+        credentials = pika.PlainCredentials('cctv_ai', 'idmohanceo@ai.bits')
+        try:
+                self.connection = pika.BlockingConnection(pika.ConnectionParameters('127.0.0.1',credentials=credentials,client_properties={"connection_name":self.temp_dict["cam_no"]}))
+        except Exception as  excp:
+                print(excp.__str__(),"what the actual fuck bro")
 
         # self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         self.channel_temp = self.connection.channel()
@@ -79,7 +82,7 @@ class custom_accumulator():
                     
                     print("waht hapapedn",self.temp_dict["cam_no"],e)
                     print("reconnecting ...")
-                    credentials = pika.PlainCredentials('guest', 'guest')
+                    credentials = pika.PlainCredentials('cctv_ai', 'idmohanceo@ai.bits')
                     self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost',credentials=credentials,client_properties={"connection_name":self.temp_dict["cam_no"]}))
                     # self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
                     self.channel_temp = self.connection.channel()
@@ -99,7 +102,7 @@ class custom_accumulator():
                     
                     print("waht hapapedn",self.temp_dict["cam_no"],e)
                     print("reconnecting ...")
-                    credentials = pika.PlainCredentials('guest', 'guest')
+                    credentials = pika.PlainCredentials('cctv_ai', 'idmohanceo@ai.bits')
                     self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost',credentials=credentials,client_properties={"connection_name":self.temp_dict["cam_no"]}))
                     # self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
                     self.channel_temp = self.connection.channel()

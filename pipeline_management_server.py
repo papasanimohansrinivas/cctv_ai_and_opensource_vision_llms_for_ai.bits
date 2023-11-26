@@ -7,10 +7,11 @@ import datetime
 import pymysql
 import subprocess
 import traceback
+import requests
 
 from threading import Thread
 
-app = Flask(__name__,template_folder='/root/backup_xeon_decoding_server_sep_21_2022')
+app = Flask(__name__,template_folder='/root/cctv_ai_and_opensource_vision_llms_for_ai.bits')
 
 # db = pymysql.connect("127.0.0.1", "root", "cctv@ai#SOFTWARE0007", "cctv_ai_usecase_products")
 def alert_mechanism(cam_no,mp4_payload,server_public_ip_address,password,is_infinite_loop,number_of_times_to_call):
@@ -157,7 +158,7 @@ def alert_mechanism(cam_no,mp4_payload,server_public_ip_address,password,is_infi
         from_whatsapp_no  = alert_number_results[0]["twilio_whatsapp_number"]
 
         from_twilio_phone_no = alert_number_results[0]["twilio_call_number"]
-
+        do_whatsapp =  True
         if do_whatsapp:
 
             # assume this is for india numbers only for now , for us we have to change and adapt the code
@@ -332,7 +333,7 @@ def alert_mechanism(cam_no,mp4_payload,server_public_ip_address,password,is_infi
     
     
 
-default_path_1= "/root/backup_xeon_decoding_server_sep_21_2022"
+default_path_1= "/root/cctv_ai_and_opensource_vision_llms_for_ai.bits"
 
 default_path_2 = "/etc/systemd/system"
 
@@ -350,7 +351,7 @@ dvr_connection_systemd_service_file = """[Unit]
 Description={}
 
 [Service]
-WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+WorkingDirectory=/root/cctv_ai_and_opensource_vision_llms_for_ai.bits
 ExecStart=/usr/bin/python3 dvr_to_cloud_ipv6_3.py {}
 
 [Install]
@@ -360,7 +361,11 @@ stream_decoding_shell_file=  """source  /opt/intel/dlstreamer/setupvars.sh
 export GST_DEBUG=3
 /opt/intel/dlstreamer/gstreamer/bin/gst-launch-1.0 -mvvv {}
 """
-stream_decoding_shell_file_command = """udpsrc  name={} mtu=7000000 timeout=30000000000 port={}   !   queue  !    h264parse  ! video/x-h264,stream-format=byte-stream,alignment=nal ! vaapih264dec   !   vaapipostproc    ! videoconvert ! capsfilter  caps="video/x-raw,format=BGR"  ! videorate    ! video/x-raw,width={},height={} ,framerate=1/1 !  queue  ! gvapython module=xeon_gva_python_3.py class=custom_accumulator function=process_frame arg={{\\\\\\"cam_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"accumulate_frames_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"rabbitmq_queue_name\\\\\\":\\\\\\"{}\\\\\\"}} ! fakesink async=false"""
+#### for dahua / cpplus / hikvision
+# stream_decoding_shell_file_command = """udpsrc  name={} mtu=7000000 timeout=30000000000 port={}   !   queue  !    h264parse  ! video/x-h264,stream-format=byte-stream,alignment=nal ! vaapih264dec   !   vaapipostproc    ! videoconvert ! capsfilter  caps="video/x-raw,format=BGR"  ! videorate    ! video/x-raw,width={},height={} ,framerate=1/1 !  queue  ! gvapython module=xeon_gva_python_3.py class=custom_accumulator function=process_frame arg={{\\\\\\"cam_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"accumulate_frames_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"rabbitmq_queue_name\\\\\\":\\\\\\"{}\\\\\\"}} ! fakesink async=false"""
+
+# ### ipv6 addresses
+stream_decoding_shell_file_command = """rtspsrc location={} ! application/x-rtp, media=video, encoding-name=H264  !   queue  !    h264parse  ! video/x-h264,stream-format=byte-stream,alignment=nal ! vaapih264dec   !   vaapipostproc    ! videoconvert ! capsfilter  caps="video/x-raw,format=BGR"  ! videorate    ! video/x-raw,width={},height={} ,framerate=1/3 !  queue  ! gvapython module=xeon_gva_python_3.py class=custom_accumulator function=process_frame arg={{\\\\\\"cam_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"accumulate_frames_no\\\\\\":\\\\\\"{}\\\\\\"\,\\\\\\"rabbitmq_queue_name\\\\\\":\\\\\\"{}\\\\\\"}} ! fakesink async=false"""
 
 stream_decoding_systemd_service_file  = """[Unit]
 Description={}
@@ -369,7 +374,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Restart=always
-WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+WorkingDirectory=/root/cctv_ai_and_opensource_vision_llms_for_ai.bits
 ExecStart=/bin/bash {}
 StandardError=append:/var/log/{}.log
 Restart=on-failure
@@ -413,7 +418,7 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+WorkingDirectory=/root/cctv_ai_and_opensource_vision_llms_for_ai.bits
 ExecStart=/opt/fluent-bit/bin/fluent-bit -c {}
 
 [Install]
@@ -439,7 +444,7 @@ def restart_service(systemd_service_name):
     return job
 
 
-db = pymysql.connect(host='127.0.0.1',user='root',password="cctv@ai#SOFTWARE007",database="cctv_ai_usecase_products",charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+# db = pymysql.connect(host='127.0.0.1',user='root',password="cctv@ai#SOFTWARE007",database="cctv_ai_usecase_products",charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
 @app.route('/pipeline_management_admin', methods=['GET'])
 def pipeline_management_home_page():
     
@@ -460,8 +465,13 @@ def pipeline_management_1():
             dvr_password = important_dict['dvr_password'][0]
             dvr_port = important_dict['dvr_port'][0]
 
-            if dvr_static_ip == "" or dvr_port=="" or len(dvr_static_ip.split("."))!=4:
-                return render_template('new_static_ip_port_pipeline.html',template_var1="Un supported values entered for port and ip") 
+            if dvr_static_ip == "" or dvr_port=="" :
+                if  len(dvr_static_ip.split("."))==4  :
+                    pass
+                elif len(dvr_static_ip.split(":"))>3:
+                    pass
+                else:
+                    return render_template('new_static_ip_port_pipeline.html',template_var1="Un supported values entered for port and ip") 
             if dvr_user_name=='' or dvr_password == '' or dvr_port == '':
                 return render_template('new_static_ip_port_pipeline.html',template_var1="dvr password or dvr username or dvr port  is empty ")
             cursor = db.cursor()
@@ -512,6 +522,7 @@ def pipeline_management_1():
                         if assignment_for_client_id_in_system=='client_1':
                             allocated_udp_range_per_static_ip_plus_port_per_client = "11000-11015"
                         else:
+                            #dead code applicable if using dahua sdk only ?
                             cursor = db.cursor()
                             sql = "SELECT * FROM `customer_deployment_table`"
                             cursor.execute(sql)
@@ -580,8 +591,8 @@ def pipeline_management_1():
                                 temp_port_1,temp_port_2 = int(temp_port_1),int(temp_port_2)
                                 temp_port_list  = [port_number for port_number in range(temp_port_1,temp_port_2+1)]
                                 cam_number_to_udp_port_mapping_list = ",".join(str(temp_port_list[int(temp_cam_number)-1]) for temp_cam_number in cam_number_list.split(","))
-                                dvr_connection_systemd_service_ini_data =  dvr_connection_systemd_service_ini_file.format(assignment_for_client_id_in_system,dvr_static_ip,dvr_user_name,dvr_password,dvr_port,cam_number_list,cam_number_to_udp_port_mapping_list)
-                                dvr_connection_systemd_service_ini_file_name =  dvr_connection_systemd_service_name.replace("service","ini")
+                                # dvr_connection_systemd_service_ini_data =  dvr_connection_systemd_service_ini_file.format(assignment_for_client_id_in_system,dvr_static_ip,dvr_user_name,dvr_password,dvr_port,cam_number_list,cam_number_to_udp_port_mapping_list)
+                                # dvr_connection_systemd_service_ini_file_name =  dvr_connection_systemd_service_name.replace("service","ini")
 
                                 cam_description_list = important_dict["cam_description_list"][0]
 
@@ -606,11 +617,11 @@ def pipeline_management_1():
                                 if len(cam_description_list.split("#"))!=len(cam_number_list.split(",")):
                                     return render_template('new_static_ip_port_pipeline.html',template_var1="cam description length and cam number length not matching !")
 
-                                state = write_file_to_directory(dvr_connection_systemd_service_ini_file_name,default_path_1,dvr_connection_systemd_service_ini_data)
-                                if state == True:
-                                    pass
-                                else:
-                                    return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
+                                # state = write_file_to_directory(dvr_connection_systemd_service_ini_file_name,default_path_1,dvr_connection_systemd_service_ini_data)
+                                # if state == True:
+                                    # pass
+                                # else:
+                                    # return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
                                 
                                 # state_2 = write_file_to_directory(dvr_connection_systemd_service_ini_file_name,default_path_2,dvr_connection_systemd_service_ini_data)
 
@@ -619,20 +630,20 @@ def pipeline_management_1():
                                 # else:
                                 #     return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
 
-                                dvr_connection_systemd_service_file_data = dvr_connection_systemd_service_file.format(dvr_connection_systemd_service_name,dvr_connection_systemd_service_ini_file_name)
+                                # dvr_connection_systemd_service_file_data = dvr_connection_systemd_service_file.format(dvr_connection_systemd_service_name,dvr_connection_systemd_service_ini_file_name)
 
-                                state_2 = write_file_to_directory(dvr_connection_systemd_service_name,default_path_1,dvr_connection_systemd_service_file_data)
-                                if state_2 == True:
-                                    pass
-                                else:
-                                    return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
+                                # state_2 = write_file_to_directory(dvr_connection_systemd_service_name,default_path_1,dvr_connection_systemd_service_file_data)
+                                # if state_2 == True:
+                                    # pass
+                                # else:
+                                    # return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
 
-                                state_3 = write_file_to_directory(dvr_connection_systemd_service_name,default_path_2,dvr_connection_systemd_service_file_data)
+                                # state_3 = write_file_to_directory(dvr_connection_systemd_service_name,default_path_2,dvr_connection_systemd_service_file_data)
 
-                                if state_3 == True:
-                                    pass
-                                else:
-                                    return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
+                                # if state_3 == True:
+                                    # pass
+                                # else:
+                                    # return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
                                 stream_decoding_shell_file_command_list = []
 
                                 for current_cam in cam_number_list.split(","):
@@ -699,7 +710,7 @@ def pipeline_management_1():
                                     return render_template('new_static_ip_port_pipeline.html',template_var1="folder permission issue and unable to write file to folder ")
                                 
                                 
-                                print(dvr_connection_systemd_service_file_data)
+                                # print(dvr_connection_systemd_service_file_data)
                                 print(fluentbit_systemd_service_config_file_data,fluentbit_systemd_service_config_file_name)
                                 print(fluentbit_systemd_service_file_data)
                                 print(stream_decoding_systemd_service_file_data)
@@ -717,9 +728,9 @@ def pipeline_management_1():
 
                                 print(job_2)
 
-                                job_3 = restart_service(dvr_connection_systemd_service_name)
+                                # job_3 = restart_service(dvr_connection_systemd_service_name)
 
-                                print(job_3)
+                                # print(job_3)
 
 
                                 cursor_final = db.cursor()
@@ -762,6 +773,7 @@ def pipeline_management_1():
         else:
             return render_template('new_static_ip_port_pipeline.html',template_var1="UN authenitcated user")
 
+#not in use anymore 
 @app.route('/restart_dvr_connection', methods=['POST'])
 def restart_dahua_sdk():
     content_list = request.json
@@ -810,6 +822,73 @@ def restart_dahua_sdk():
 
     return "Hello World!"
 
+
+
+@app.route('/fire_alert_webhook_callback',methods=['GET','POST'])
+def alert_webhook_mechanism_for_fire_detection():
+    
+    # try:
+
+        print(request.data,request,"here it is request from consumer server")
+        app.logger.info(request.data)
+        app.logger.info(request)
+        # alert_json = request.get_json()
+        # mp4_payload =  alert_json["mp4_payload"]
+        # cam_no =  alert_json["cam_no"]
+        # server_public_ip_address = alert_json["server_public_ip_address"]
+        # password = "cctv@ai#SOFTWARE007" 
+        # is_infinite_loop = False
+        # number_of_times_to_call = 6
+
+        # temp_thread = Thread(target = alert_mechanism,args=(cam_no,mp4_payload,server_public_ip_address,password,is_infinite_loop,number_of_times_to_call,))
+        # temp_thread.start()
+
+        return "Started Fire alert"
+
+    # except Exception as error_3:
+        # return str(error_3)
+    
+
+
+def gupshup_whatsapp_alert(cam_no,media_payload,destination,response2):
+
+    import json
+    url = "https://api.gupshup.io/sm/api/v1/msg"
+    api_key = "hvgou8hr7feezm1rlac2w6p1ze1auzxf"
+    headers = {
+    'apikey': api_key,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    data = 'channel=whatsapp&source=918297348089&destination={}&message=%7B%22type%22:%22image%22,%22previewUrl%22:%22{}%22,%22originalUrl%22:%22{}%22,%22caption%22:%22{}%22,%22filename%22:%22Sample.png%22%7D&src.name=cctvaiforfiredetection'.format(destination,media_payload,media_payload,response2)
+
+    # response = requests.post('http://api.gupshup.io/sm/api/v1/template/msg', headers=headers, data=data)
+    response = requests.post('https://api.gupshup.io/sm/api/v1/msg', headers=headers, data=data)
+    # headers = {"Content-Type": "application/x-www-form-urlencoded","apikey": api_key}
+    print(str(response.content))
+    # body = {
+    #     "channel" : "whatsapp",
+    #     "source" : "918297348089",
+    #     "destination" : "{}".format(destination),
+    #     "src.name":"cctvaiforfiredetection",
+    #     "message" : {
+    #         "type": "image",
+    #         "originalUrl": media_payload,
+    #         "previewUrl": media_payload,
+    #         "caption":"fire alert at {}".format(cam_no)
+    #     }
+    # }
+    # r = requests.post(url, data=json.dumps(body),headers=headers)
+
+    # try:
+    #     print(r.text)
+    # except Exception as excp:
+    #     print(excp.__str__(),"error in printing response")
+    # r = requests.get(url, data=json.dumps(body),headers=headers)
+
+    return response.status_code
+
+
 @app.route('/fire_alert_mechanism',methods=['POST'])
 def alert_mechanism_for_fire_detection():
     
@@ -817,16 +896,20 @@ def alert_mechanism_for_fire_detection():
 
         print(request.json,"here it is request from consumer server")
         alert_json = request.get_json()
-        mp4_payload =  alert_json["mp4_payload"]
+        media_payload =  alert_json["media_payload"]
         cam_no =  alert_json["cam_no"]
-        server_public_ip_address = alert_json["server_public_ip_address"]
-        password = "cctv@ai#SOFTWARE007" 
-        is_infinite_loop = False
-        number_of_times_to_call = 6
-
-        temp_thread = Thread(target = alert_mechanism,args=(cam_no,mp4_payload,server_public_ip_address,password,is_infinite_loop,number_of_times_to_call,))
-        temp_thread.start()
-
+        response2 = alert_json["response2"]
+        # server_public_ip_address = alert_json["server_public_ip_address"]
+        # password = "cctv@ai#SOFTWARE007" 
+        # is_infinite_loop = False
+        # number_of_times_to_call = 6
+        another_destination = ["12018929488"]
+        destinations = ["917093054982"]
+        # destinations = destinations+another_destination
+        for num in destinations:
+            temp_thread = Thread(target = gupshup_whatsapp_alert,args=(cam_no,media_payload,num,response2,))
+            temp_thread.start()
+        
         return "Started Fire alert"
 
     except Exception as error_3:

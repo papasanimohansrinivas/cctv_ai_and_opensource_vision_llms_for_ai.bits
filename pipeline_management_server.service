@@ -3,7 +3,7 @@ Description=Gunicorn
 After=network.target
 
 [Service]
-WorkingDirectory=/root/backup_xeon_decoding_server_sep_21_2022
+WorkingDirectory=/root/cctv_ai_and_opensource_vision_llms_for_ai.bits
 ExecStart=/usr/local/bin/gunicorn -w 1 -b 0.0.0.0:60000 --max-requests 1200 --graceful-timeout 180  "pipeline_management_server:app"
 Restart=on-failure
 
